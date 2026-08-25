@@ -63,6 +63,22 @@ public sealed class ModuleService : IModuleService
             throw new ModuleOperationException("agent-turn-denied", ErrorCategory.PermissionDenied, "The actor is not authorized to execute an agent turn.");
         }
 
+        var sessionId = context.Scope.SessionId;
+        if (string.IsNullOrWhiteSpace(sessionId))
+            throw new ModuleOperationException("session-required", ErrorCategory.InvalidRequest, "Agent turns require an active session scope.");
+        var sessionResult = await dependencies.InvokeAsync(
+            "sessions",
+            context,
+            JsonSerializer.SerializeToElement(new { operation = "get", sessionId }),
+            "sessions.manage.request@1",
+            null,
+            cancellationToken).ConfigureAwait(false);
+        var session = sessionResult.GetProperty("session");
+        if (session.GetProperty("state").GetString() != "open" ||
+            session.GetProperty("conversationId").GetString() != conversationId ||
+            session.GetProperty("personId").GetString() != personId)
+            throw new ModuleOperationException("session-scope-invalid", ErrorCategory.PermissionDenied, "Session scope does not match the authorized actor and conversation.");
+
         var userMessageId = $"message-{Guid.NewGuid():N}";
         await dependencies.InvokeAsync(
             "conversations",

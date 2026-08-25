@@ -18,7 +18,7 @@ public sealed class AgentTurnTests
             "agent.turn",
             "dev.murchalka.client-realtime",
             "local:test",
-            new InvocationScope(null, null, "person-test", null, null, null),
+            new InvocationScope(null, null, "person-test", null, "session-test", null),
             "interactive-agent-turn",
             "correlation-test",
             DateTimeOffset.UtcNow.AddMinutes(1),
@@ -38,7 +38,7 @@ public sealed class AgentTurnTests
 
         Assert.Equal("Hello back.", result.GetProperty("message").GetProperty("content").GetString());
         Assert.Equal(
-            ["authorization", "conversations", "context", "model", "conversations", "audit"],
+            ["authorization", "sessions", "conversations", "context", "model", "conversations", "audit"],
             dependencies.Calls);
     }
 }

@@ -3,13 +3,13 @@ kind: Module
 metadata:
   id: dev.murchalka.agent-runtime
   name: Murchalka Agent Runtime
-  version: 0.1.0
+  version: 0.2.1
   publisher: dev.murchalka
   description: Agent Runtime module for the Phase 5 minimal profile.
   license: Apache-2.0
 compatibility:
-  moduleSdk: ">=0.2.0 <0.3.0"
-  runtime: ">=0.1.0 <0.3.0"
+  moduleSdk: ">=0.2.0 <0.2.99"
+  runtime: ">=0.1.0 <0.2.99"
   moduleProtocol: "1"
 artifacts:
   runtime:
@@ -46,6 +46,12 @@ requires:
       cardinality: exactlyOne
       selection: automatic
       scope: module
+    - requirementId: sessions
+      capability: sessions.manage
+      version: ">=1.0.0 <2.0.0"
+      cardinality: exactlyOne
+      selection: automatic
+      scope: session
     - requirementId: context
       capability: context.assemble
       version: ">=1.0.0 <2.0.0"
@@ -69,6 +75,7 @@ permissions:
     invoke:
       - authorization.evaluate
       - conversations.history
+      - sessions.manage
       - context.assemble
       - category: model.chat
       - audit.store
@@ -85,4 +92,3 @@ upgrade:
   strategy: sideBySide
   rollbackWindow: 7d
   stateMigration: none
-

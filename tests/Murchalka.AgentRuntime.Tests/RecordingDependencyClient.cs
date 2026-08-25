@@ -20,6 +20,17 @@ internal sealed class RecordingDependencyClient : IModuleDependencyClient
         return ValueTask.FromResult(requirementId switch
         {
             "authorization" => JsonSerializer.SerializeToElement(new { allowed = true, personId = "person-test" }),
+            "sessions" => JsonSerializer.SerializeToElement(new
+            {
+                session = new
+                {
+                    sessionId = "session-test",
+                    conversationId = "conversation-test",
+                    personId = "person-test",
+                    state = "open"
+                },
+                version = 1
+            }),
             "conversations" => JsonSerializer.SerializeToElement(new { accepted = true }),
             "context" => JsonSerializer.SerializeToElement(new
             {
