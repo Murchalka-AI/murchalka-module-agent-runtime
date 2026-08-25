@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["conversationId", "userMessageId", "assistantMessageId", "message", "model"],
+  "properties": {
+    "conversationId": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "userMessageId": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "assistantMessageId": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "message": {
+      "type": "object",
+      "required": ["role", "content"],
+      "properties": { "role": { "const": "assistant" }, "content": { "type": "string", "minLength": 1, "maxLength": 32768 } },
+      "additionalProperties": false
+    },
+    "model": { "type": ["string", "null"], "maxLength": 256 }
+  },
+  "additionalProperties": false
+}

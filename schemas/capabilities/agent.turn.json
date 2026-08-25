@@ -1,0 +1,50 @@
+{
+  "apiVersion": "capabilities.murchalka.dev/v1",
+  "kind": "CapabilityContract",
+  "metadata": {
+    "id": "agent.turn",
+    "version": "1.0.0",
+    "category": "agent.runtime",
+    "description": "Agent Runtime Phase 5 capability."
+  },
+  "request": {
+    "schema": "agent.turn.request.schema.json"
+  },
+  "response": {
+    "schema": "agent.turn.response.schema.json"
+  },
+  "semantics": {
+    "interaction": "requestResponse",
+    "sideEffect": "idempotent",
+    "idempotency": "required",
+    "streaming": false,
+    "cancellation": "required",
+    "defaultTimeout": "3m",
+    "maxPayloadBytes": 1048576
+  },
+  "security": {
+    "inputDataClasses": [
+      "internal",
+      "personal",
+      "sensitive"
+    ],
+    "outputDataClasses": [
+      "internal",
+      "personal",
+      "sensitive"
+    ],
+    "requiredPurpose": "agent-runtime"
+  },
+  "errors": [
+    {
+      "code": "request-invalid",
+      "retryable": false,
+      "description": "The request does not satisfy the capability contract."
+    },
+    {
+      "code": "dependency-not-granted",
+      "retryable": true,
+      "description": "A required capability dependency is not currently granted."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "operation",
+    "conversationId",
+    "text"
+  ],
+  "properties": {
+    "operation": {
+      "const": "turn"
+    },
+    "conversationId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "characterId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32768
+    }
+  },
+  "maxProperties": 16,
+  "additionalProperties": false
+}

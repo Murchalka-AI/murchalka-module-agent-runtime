@@ -1,0 +1,88 @@
+apiVersion: modules.murchalka.dev/v1
+kind: Module
+metadata:
+  id: dev.murchalka.agent-runtime
+  name: Murchalka Agent Runtime
+  version: 0.1.0
+  publisher: dev.murchalka
+  description: Agent Runtime module for the Phase 5 minimal profile.
+  license: Apache-2.0
+compatibility:
+  moduleSdk: ">=0.2.0 <0.3.0"
+  runtime: ">=0.1.0 <0.3.0"
+  moduleProtocol: "1"
+artifacts:
+  runtime:
+    - id: agent-runtime-process
+      mode: process
+      os: [linux, windows, macos]
+      architectures: [x64, arm64]
+      entrypoint: runtime/process/Murchalka.AgentRuntime
+      digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+      protocolVersion: 1
+provides:
+  capabilities:
+    - id: agent.turn
+      category: agent.runtime
+      version: 1.0.0
+      contract: schemas/capabilities/agent.turn.json
+      cardinality: manyConsumers
+      scope: [global, tenant, workspace, person, session, module]
+      execution:
+        kind: requestResponse
+        idempotency: required
+        timeout: 3m
+requires:
+  capabilities:
+    - requirementId: authorization
+      capability: authorization.evaluate
+      version: ">=1.0.0 <2.0.0"
+      cardinality: exactlyOne
+      selection: automatic
+      scope: module
+    - requirementId: conversations
+      capability: conversations.history
+      version: ">=1.0.0 <2.0.0"
+      cardinality: exactlyOne
+      selection: automatic
+      scope: module
+    - requirementId: context
+      capability: context.assemble
+      version: ">=1.0.0 <2.0.0"
+      cardinality: exactlyOne
+      selection: automatic
+      scope: module
+    - requirementId: model
+      category: model.chat
+      version: ">=1.0.0 <2.0.0"
+      cardinality: exactlyOne
+      selection: admin
+      scope: module
+    - requirementId: audit
+      capability: audit.store
+      version: ">=1.0.0 <2.0.0"
+      cardinality: exactlyOne
+      selection: automatic
+      scope: module
+permissions:
+  capabilities:
+    invoke:
+      - authorization.evaluate
+      - conversations.history
+      - context.assemble
+      - category: model.chat
+      - audit.store
+health:
+  startupTimeout: 15s
+  readiness: { interval: 2s, timeout: 2s, failureThreshold: 3 }
+  liveness: { interval: 30s, timeout: 2s, failureThreshold: 3 }
+activation:
+  mode: automaticWhenTrusted
+  failurePolicy: rollback
+  hotReload: true
+  drainTimeout: 30s
+upgrade:
+  strategy: sideBySide
+  rollbackWindow: 7d
+  stateMigration: none
+
