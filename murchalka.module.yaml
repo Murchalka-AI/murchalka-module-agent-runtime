@@ -3,7 +3,7 @@ kind: Module
 metadata:
   id: dev.murchalka.agent-runtime
   name: Murchalka Agent Runtime
-  version: 0.2.1
+  version: 0.2.2
   publisher: dev.murchalka
   description: Agent Runtime module for the Phase 5 minimal profile.
   license: Apache-2.0
@@ -70,6 +70,12 @@ requires:
       cardinality: exactlyOne
       selection: automatic
       scope: module
+    - requirementId: observability
+      capability: observability.metrics
+      version: ">=1.0.0 <2.0.0"
+      cardinality: exactlyOne
+      selection: automatic
+      scope: module
 permissions:
   capabilities:
     invoke:
@@ -79,6 +85,7 @@ permissions:
       - context.assemble
       - category: model.chat
       - audit.store
+      - observability.metrics
 health:
   startupTimeout: 15s
   readiness: { interval: 2s, timeout: 2s, failureThreshold: 3 }

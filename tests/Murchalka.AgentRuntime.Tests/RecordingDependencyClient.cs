@@ -43,6 +43,7 @@ internal sealed class RecordingDependencyClient : IModuleDependencyClient
                 model = "test-model"
             }),
             "audit" => JsonSerializer.SerializeToElement(new { accepted = true }),
+            "observability" => JsonSerializer.SerializeToElement(new { recorded = true }),
             _ => throw new InvalidOperationException($"Unexpected dependency '{requirementId}'.")
         });
     }

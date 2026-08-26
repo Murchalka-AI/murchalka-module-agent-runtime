@@ -38,7 +38,7 @@ public sealed class AgentTurnTests
 
         Assert.Equal("Hello back.", result.GetProperty("message").GetProperty("content").GetString());
         Assert.Equal(
-            ["authorization", "sessions", "conversations", "context", "model", "conversations", "audit"],
+            ["authorization", "sessions", "conversations", "context", "model", "conversations", "audit", "observability"],
             dependencies.Calls);
     }
 }

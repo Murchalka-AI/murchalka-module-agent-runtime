@@ -141,6 +141,13 @@ public sealed class ModuleService : IModuleService
             $"{context.IdempotencyKey}:assistant",
             cancellationToken).ConfigureAwait(false);
         await AuditAsync(context, dependencies, personId, conversationId, "succeeded", cancellationToken).ConfigureAwait(false);
+        await dependencies.InvokeAsync(
+            "observability",
+            context,
+            JsonSerializer.SerializeToElement(new { operation = "record", name = "agent.turn.succeeded", value = 1 }),
+            "observability.metrics.request@1",
+            null,
+            cancellationToken).ConfigureAwait(false);
 
         return JsonSerializer.SerializeToElement(new
         {
