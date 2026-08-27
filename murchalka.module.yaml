@@ -3,13 +3,13 @@ kind: Module
 metadata:
   id: dev.murchalka.agent-runtime
   name: Murchalka Agent Runtime
-  version: 0.2.2
+  version: 0.3.3
   publisher: dev.murchalka
   description: Agent Runtime module for the Phase 5 minimal profile.
   license: Apache-2.0
 compatibility:
-  moduleSdk: ">=0.2.0 <0.2.99"
-  runtime: ">=0.1.0 <0.2.99"
+  moduleSdk: ">=0.3.0 <0.4.0"
+  runtime: ">=0.3.0 <0.4.0"
   moduleProtocol: "1"
 artifacts:
   runtime:
